@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Jio Cinema</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.17/mediaelementplayer.min.css">
+    <link rel="icon" href="https://www.jiocinema.com/images/favicon.ico" />
+    <style>
+           :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #3f37c9;
+            --accent: #f72585;
+            --dark: #222639;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+        }
+        
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #000;
+        }
+        
+        #player-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+        }
+        
+        .aspect-ratio-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        #my-player, 
+        video, 
+        .video-js,
+        .plyr {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100% !important;
+            height: 100% !important;
+        }
+        
+        .player-logo {
+            position: absolute;
+            z-index: 99999;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            max-width: 100px;
+        }
+        
+        .player-logo:hover {
+            opacity: 1;
+        }
+        
+                .player-logo {
+            top: 10px;
+            right: 10px;
+        }
+                
+                
+        .video-js .vjs-control-bar {
+            background-color: var(--vjs-primary-bg-color, rgba(43, 51, 63, 0.7));
+        }
+        
+        .video-js .vjs-big-play-button {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            line-height: 80px;
+            top: 50%;
+            left: 50%;
+            margin-top: -40px;
+            margin-left: -40px;
+        }
+        
+        .plyr__control--overlaid {
+            background: var(--primary) !important;
+        }
+        
+        .plyr--full-ui input[type=range] {
+            color: var(--primary) !important;
+        }
+        
+        .plyr__control.plyr__tab-focus,
+        .plyr__control:hover,
+        .plyr__control[aria-expanded=true] {
+            background: var(--primary-dark) !important;
+        }
+        
+                .vjs-download-button,
+        .plyr__controls__item.plyr__control[data-plyr="download"],
+        .clp-download {
+            display: none !important;
+        }
+                
+        .cc-controls[data-cc-controls] {
+            display: block !important;
+        }
+
+        .unmute-button {
+            position: absolute;
+            z-index: 20;
+            padding: 10px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: none;
+        }
+        
+        .unmute-button:hover {
+            background-color: rgba(255, 255, 255, 0.9) !important;
+        }
+        
+                .unmute-button {
+            top: 20px;
+            left: 20px;
+        }
+                
+        #ad-container {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            z-index: 100;
+            pointer-events: none;
+            background: rgba(0,0,0,0.5);
+        }
+        
+        #ad-container > * {
+            pointer-events: auto;
+        }
+        
+        /* Custom styles for Clappr auto-hide */
+        .media-control-hide {
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+
+    </style>
+</head>
+<body>
+  <div id="player-container">
+    <video id="my-player" width="100%" height="100%" controls autoplay playsinline preload="auto">
+      <source id="m3u8-url" src="" type="application/x-mpegURL">
+    </video>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/4.2.17/mediaelement-and-player.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.1.5/hls.min.js"></script>
+
+<script type="text/javascript">
+    var urlParams = new URLSearchParams(window.location.search);
+    var maxvalue = urlParams.get('url');
+ //  var maxvalue = "https://docs.evostream.com/sample_content/assets/hls-sintel-abr3/playlist.m3u8";
+
+    document.getElementById("m3u8-url").setAttribute("src", maxvalue);
+  </script>
+
+  <script>
+document.addEventListener('DOMContentLoaded', function() {
+         
+    const player = new MediaElementPlayer('my-player', {
+      features: ['playpause', 'current', 'progress', 'duration', 'volume', 'tracks', 'fullscreen', 'speed', 'quality'],
+      stretching: 'fill',
+      success: function(media) {
+        if (document.fullscreenEnabled) {
+          const tryFull = () => {
+            const el = document.getElementById('my-player');
+            if (el.requestFullscreen) el.requestFullscreen();
+          };
+          setTimeout(tryFull, 1000);
+        }
+      }
+    });
+  });
+  </script>
